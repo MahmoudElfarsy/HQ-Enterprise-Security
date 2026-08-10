@@ -258,6 +258,8 @@ Responsible for:
 - Inter-VLAN routing
 - HQ static routing
 - HA interface preparation
+- Routing
+- HA configuration
 
 ### Menna Moutafa — WAN & Connectivity
 
@@ -270,8 +272,7 @@ Responsible for:
 - WAN connectivity
 - IPsec VPN
 - Remote VPN
-- Routing
-- HA configuration
+
 
 ### Lana Omran — Security
 
