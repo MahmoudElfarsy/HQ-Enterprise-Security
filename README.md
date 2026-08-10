@@ -84,12 +84,12 @@ IP Addressing
 
 The network uses private RFC1918 addressing with a structured addressing plan.
 
-HQ
+HQ Networks
 Network	Purpose
 192.168.10.0/24	HQ Users
 192.168.20.0/24	HQ Servers
 192.168.30.0/24	HQ Management
-Branch 1
+Branch 1 Networks
 Network	Purpose
 192.168.110.0/24	Branch 1 Users
 192.168.120.0/24	Branch 1 Servers
@@ -156,8 +156,7 @@ Branch 1 Networks
 
 The VPN design provides secure connectivity between corresponding network segments.
 
-Configured VPN technology includes:
-
+VPN Technology
 IKEv2
 IPsec
 Pre-shared key authentication
@@ -228,9 +227,7 @@ Repository Structure
 HQ-Enterprise-Security/
 │
 ├── README.md
-│
 ├── HQ_Enterprise_1786111675435_1786121515211.unl
-│
 ├── Enterprise-Network-Security-Report.docx
 │
 └── screenshots/
@@ -257,7 +254,7 @@ The complete technical documentation is available in:
 
 Enterprise-Network-Security-Report.docx
 
-The report contains the detailed:
+The report contains detailed information about:
 
 Network architecture
 IP addressing
