@@ -260,6 +260,7 @@ Responsible for:
 - HA interface preparation
 - Routing
 - HA configuration
+- Security testing
 
 ### Menna Moutafa — WAN & Connectivity
 
@@ -287,7 +288,6 @@ Responsible for:
 - Antivirus
 - Web Filtering
 - Application Control
-- Security testing
 - Documentation
 
 ---
