@@ -242,7 +242,11 @@ The documentation contains the project architecture, configurations, addressing 
 
 ## Project Team
 
-### Enterprise Infrastructure Engineer
+This project was developed collaboratively as a three-member enterprise network security team.
+
+### Mahmoud Elfarsy — Network Infrastructure
+
+[@MahmoudElfarsy](https://github.com/MahmoudElfarsy)
 
 Responsible for:
 
@@ -255,7 +259,9 @@ Responsible for:
 - HQ static routing
 - HA interface preparation
 
-### WAN & Connectivity Engineer
+### Menna Moutafa — WAN & Connectivity
+
+[@mennamoutafa321](https://github.com/mennamoutafa321)
 
 Responsible for:
 
@@ -267,7 +273,9 @@ Responsible for:
 - Routing
 - HA configuration
 
-### Security Engineer
+### Lana Omran — Security
+
+[@lanaomran](https://github.com/lanaomran)
 
 Responsible for:
 
