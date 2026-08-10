@@ -1,142 +1,198 @@
-# Enterprise Network Security Project
+# Enterprise Network Security Infrastructure
 
-A multi-site enterprise network security implementation built and simulated using PNETLab and FortiGate.
+> Multi-site enterprise network built with FortiGate, Cisco networking, and PNETLab.
 
-## Project Overview
+## Overview
 
-This project implements a segmented, secure, redundant, and manageable enterprise network consisting of:
+This project is a complete enterprise network security lab designed to simulate a real-world multi-site organization with a centralized Headquarters and multiple branches.
 
-- Headquarters (HQ)
-- Branch 1
-- Branch 2
-- WAN and Internet connectivity
-- FortiGate High Availability
-- VLAN-based network segmentation
-- Inter-VLAN routing
-- Static routing
-- Site-to-site IPsec VPN
-- Firewall security controls
+The architecture combines network infrastructure, segmentation, routing, firewall security, High Availability, and site-to-site VPN connectivity in a single PNETLab environment.
 
-The lab was designed to simulate an enterprise environment and demonstrate practical network engineering and cybersecurity concepts.
+### Core Objectives
 
-## Network Architecture
+- Design a scalable enterprise network architecture
+- Segment internal traffic using VLANs
+- Implement Inter-VLAN routing
+- Configure static routing across multiple sites
+- Build FortiGate High Availability at HQ
+- Establish secure site-to-site IPsec connectivity
+- Implement centralized firewall security controls
+- Validate connectivity and security through practical testing
 
-The topology consists of a centralized HQ connected to multiple branch networks through simulated WAN infrastructure.
+---
 
-### Headquarters
+## Architecture
 
-- HQ ISP
-- HQ Edge Router
-- HQ FortiGate HA Cluster
-- Core Switch
-- Access Switches
-- Users VLAN
-- Servers VLAN
-- Management VLAN
-
-### Branches
-
-- Branch 1 ISP and Edge Router
-- Branch 1 FortiGate
-- Branch 1 LAN
-- Branch 2 ISP and Edge Router
-- Branch 2 FortiGate
-- Branch 2 LAN
-
-### Topology
-
-![Enterprise Network Topology](screenshots/topology.png)
-
-The complete PNETLab topology is provided in the `.unl` file.
-
-## Network Segmentation
-
-The HQ network is segmented using VLANs:
-
-| VLAN | Purpose | Network |
-|------|---------|---------|
-| VLAN 10 | Users | 192.168.10.0/24 |
-| VLAN 20 | Servers | 192.168.20.0/24 |
-| VLAN 30 | Management | 192.168.30.0/24 |
-
-Branch networks use separate address ranges to avoid overlap between sites.
-
-## IP Addressing
-
-The project uses private RFC1918 addressing.
-
-### HQ Networks
-
-| Network | Purpose |
-|---------|---------|
-| 192.168.10.0/24 | HQ Users |
-| 192.168.20.0/24 | HQ Servers |
-| 192.168.30.0/24 | HQ Management |
-
-### Branch 1 Networks
-
-| Network | Purpose |
-|---------|---------|
-| 192.168.110.0/24 | Branch 1 Users |
-| 192.168.120.0/24 | Branch 1 Servers |
-
-WAN point-to-point links use `/30` networks, while internal LAN segments use `/24` networks.
-
-This addressing approach provides:
-
-- Clear network separation
-- Easier routing
-- Simplified troubleshooting
-- Non-overlapping site networks
-- Room for future expansion
-
-## Routing
-
-Static routing is used across the current topology because the network is relatively small and the paths are predictable.
-
-Routing is configured to provide connectivity between:
-
-- HQ internal networks
-- Branch 1 networks
-- Branch 2 networks
-- WAN transit networks
-- Internet-facing infrastructure
-
-## High Availability
-
-The HQ FortiGate firewalls are configured in an Active-Passive High Availability cluster.
+The environment consists of three major sites:
 
 ```text
-                HQ Network
-                    |
-          +---------+---------+
-          |                   |
-   HQ-FW-Primary       HQ-FW-Secondary
-      Active                Passive
+                         Internet / WAN
+                              |
+                +-------------+-------------+
+                |                           |
+             HQ Edge                     Branch WAN
+                |                     /             \
+          +-----+-----+             BR1             BR2
+          |           |
+   HQ-FW-Primary   HQ-FW-Secondary
+       ACTIVE          PASSIVE
           |
-       HA Sync
+       HA Cluster
+          |
+      HQ Core Switch
+       /    |     \
+      /     |      \
+ Users   Servers   Management
+ VLAN 10  VLAN 20   VLAN 30
+Headquarters
+ISP / WAN connectivity
+Edge Router
+FortiGate Active-Passive HA Cluster
+Core Switch
+Access Switches
+Users Network
+Servers Network
+Management Network
+Branch 1
+ISP / WAN connectivity
+Edge Router
+FortiGate Firewall
+Users Network
+Servers Network
+Branch 2
+ISP / WAN connectivity
+Edge Router
+FortiGate Firewall
+Users Network
+Servers Network
+Topology
 
-HA provides firewall redundancy and allows the secondary unit to take over if the primary unit fails.
+The complete PNETLab topology is available in the .unl file.
 
-The HA configuration was validated with both cluster members synchronized and the cluster operating in Active-Passive mode.
+Network Segmentation
 
-IPsec VPN
+The HQ network uses VLAN-based segmentation to separate different security zones.
 
-Site-to-site IPsec VPN is used to provide secure communication between HQ and branch networks.
+VLAN	Purpose	Network	Gateway
+VLAN 10	Users	192.168.10.0/24	192.168.10.1
+VLAN 20	Servers	192.168.20.0/24	192.168.20.1
+VLAN 30	Management	192.168.30.0/24	192.168.30.1
 
-The VPN design separates traffic between different network segments, including:
+Segmentation provides logical separation between users, servers, and management traffic and allows security policies to be applied between network zones.
 
-HQ Users ↔ Branch 1 Users
-HQ Servers ↔ Branch 1 Servers
+IP Addressing
 
-The project uses IKEv2 for VPN negotiation.
+The network uses private RFC1918 addressing with a structured addressing plan.
 
+HQ
+Network	Purpose
+192.168.10.0/24	HQ Users
+192.168.20.0/24	HQ Servers
+192.168.30.0/24	HQ Management
+Branch 1
+Network	Purpose
+192.168.110.0/24	Branch 1 Users
+192.168.120.0/24	Branch 1 Servers
+WAN
+
+Point-to-point WAN links use /30 networks.
+
+The addressing strategy provides:
+
+Non-overlapping site networks
+Predictable routing
+Clear network boundaries
+Easier troubleshooting
+Future expansion capability
+Routing Architecture
+
+Static routing is used across the current topology.
+
+The routing design provides connectivity between:
+
+HQ internal networks
+Branch networks
+WAN transit networks
+Internet-facing networks
+VPN-connected networks
+
+Static routing was selected because the current topology is relatively small and the traffic paths are predictable.
+
+High Availability
+
+HQ uses two FortiGate firewalls configured in an Active-Passive HA cluster.
+
+                    HQ Network
+                        |
+             +----------+----------+
+             |                     |
+       HQ-FW-Primary        HQ-FW-Secondary
+           ACTIVE                PASSIVE
+             |
+          HA Sync
+HA Design Goals
+Firewall redundancy
+Configuration synchronization
+Failover capability
+Improved availability
+Reduced single point of failure
+
+The HA cluster was validated with both members synchronized and operating in Active-Passive mode.
+
+Site-to-Site IPsec VPN
+
+Secure site-to-site communication is implemented using IPsec VPN.
+
+HQ ↔ Branch 1
+HQ Networks
+192.168.10.0/24
+192.168.20.0/24
+       |
+     IPsec
+       |
+Branch 1 Networks
+192.168.110.0/24
+192.168.120.0/24
+
+The VPN design provides secure connectivity between corresponding network segments.
+
+Configured VPN technology includes:
+
+IKEv2
+IPsec
+Pre-shared key authentication
+DH Group 14
+Phase 1 / Phase 2 negotiation
+Security Architecture
+
+FortiGate acts as the primary security enforcement point for the enterprise environment.
+
+Security Controls
+Control	Purpose
+Firewall Policies	Traffic filtering and access control
+NAT	Internet address translation
+VIP	Published services
+IPS	Intrusion prevention
+Antivirus	Malware inspection
+Web Filtering	Web access control
+Application Control	Application-level filtering
+IPsec VPN	Secure site-to-site connectivity
+VLAN Segmentation	Network isolation
+
+The security architecture is based on controlled communication between defined network zones.
+
+Technologies
+Network Infrastructure
+Cisco Networking Devices
+VLAN
+802.1Q Trunking
+Inter-VLAN Routing
+Static Routing
+DHCP
+WAN Connectivity
 Security
-
-FortiGate is used as the central security enforcement point.
-
-The security architecture includes:
-
+FortiGate-VM64-KVM
+FortiGate HA
 Firewall Policies
 NAT
 VIP
@@ -144,53 +200,75 @@ IPS
 Antivirus
 Web Filtering
 Application Control
-VPN Security
-Network Segmentation
-Technologies
-FortiGate-VM64-KVM
-PNETLab
-Cisco Networking Devices
-VLAN
-802.1Q Trunking
-Inter-VLAN Routing
-Static Routing
 IPsec VPN
-FortiGate HA
-Firewall Policies
-NAT
-UTM Security Controls
+Lab Environment
+PNETLab
+FortiGate-VM64-KVM
+Virtualized Network Devices
+Verification & Testing
+
+The implementation was validated through practical network and security testing.
+
+Testing areas include:
+
+Interface connectivity
+VLAN communication
+Inter-VLAN routing
+Static routing
+HQ-to-Branch connectivity
+IPsec tunnel status
+FortiGate HA status
+Firewall policy behavior
+Security inspection
+Network reachability
+
+Detailed testing evidence and CLI outputs are available in the project documentation.
+
 Repository Structure
 HQ-Enterprise-Security/
 │
 ├── README.md
+│
 ├── HQ_Enterprise_1786111675435_1786121515211.unl
+│
 ├── Enterprise-Network-Security-Report.docx
 │
 └── screenshots/
     └── topology.png
-How to Run the Lab
+Running the Lab
 Requirements
 PNETLab
 Required FortiGate images
 Required Cisco/network images
-The provided .unl topology file
-Steps
+The provided .unl topology
+Deployment
 Import the .unl file into PNETLab.
-Make sure the required network images are installed.
-Start the topology.
-Verify device interfaces and connectivity.
-Verify VLAN configuration and routing.
-Verify the FortiGate HA cluster.
+Verify that all required network images are installed.
+Start the complete topology.
+Verify device interfaces.
+Verify VLAN configuration.
+Verify routing tables.
+Verify FortiGate HA status.
 Verify IPsec VPN status.
-Perform the connectivity tests documented in the project report.
-Project Documentation
+Perform the connectivity tests documented in the report.
+Documentation
 
 The complete technical documentation is available in:
 
 Enterprise-Network-Security-Report.docx
 
-The documentation contains the project architecture, configurations, addressing scheme, security design, testing, and implementation evidence.
+The report contains the detailed:
 
+Network architecture
+IP addressing
+VLAN design
+Routing configuration
+Firewall configuration
+VPN configuration
+HA configuration
+Security controls
+Testing results
+Implementation evidence
 Project Team
 Enterprise Infrastructure Engineer
 
@@ -199,7 +277,7 @@ Responsible for:
 HQ infrastructure
 Core switching
 Access switching
-VLANs
+VLAN design
 DHCP
 Inter-VLAN routing
 HQ static routing
@@ -230,15 +308,18 @@ Security testing
 Documentation
 Project Status
 
-The repository contains:
+The repository currently includes:
 
-The complete PNETLab topology
-Project documentation
-Network topology screenshot
-Network architecture and addressing information
+PNETLab topology
+Technical project documentation
+Network topology visualization
+Network architecture
+IP addressing information
+Security architecture
+Deployment instructions
 
-Configuration and testing details should be referenced from the accompanying technical report.
+The technical report should be referenced for detailed configuration and testing evidence.
 
 Disclaimer
 
-This project was developed in a controlled lab environment for educational and practical cybersecurity and network engineering purposes.
+This project was developed in a controlled lab environment for educational and practical network engineering and cybersecurity purposes.
