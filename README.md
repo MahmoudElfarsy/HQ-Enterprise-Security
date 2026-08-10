@@ -4,24 +4,24 @@ A multi-site enterprise network security implementation built and simulated usin
 
 ## Project Overview
 
-This project implements an enterprise network architecture consisting of:
+This project implements a segmented, secure, redundant, and manageable enterprise network consisting of:
 
 - Headquarters (HQ)
 - Branch 1
 - Branch 2
 - WAN and Internet connectivity
-- FortiGate High Availability at HQ
+- FortiGate High Availability
 - VLAN-based network segmentation
 - Inter-VLAN routing
 - Static routing
 - Site-to-site IPsec VPN
 - Firewall security controls
 
-The project focuses on building a segmented, secure, redundant, and manageable enterprise network.
+The lab was designed to simulate an enterprise environment and demonstrate practical network engineering and cybersecurity concepts.
 
 ## Network Architecture
 
-The topology consists of a centralized HQ connected to multiple branches through simulated WAN infrastructure.
+The topology consists of a centralized HQ connected to multiple branch networks through simulated WAN infrastructure.
 
 ### Headquarters
 
@@ -43,6 +43,10 @@ The topology consists of a centralized HQ connected to multiple branches through
 - Branch 2 FortiGate
 - Branch 2 LAN
 
+### Topology
+
+![Enterprise Network Topology](screenshots/topology.png)
+
 The complete PNETLab topology is provided in the `.unl` file.
 
 ## Network Segmentation
@@ -60,6 +64,21 @@ Branch networks use separate address ranges to avoid overlap between sites.
 ## IP Addressing
 
 The project uses private RFC1918 addressing.
+
+### HQ Networks
+
+| Network | Purpose |
+|---------|---------|
+| 192.168.10.0/24 | HQ Users |
+| 192.168.20.0/24 | HQ Servers |
+| 192.168.30.0/24 | HQ Management |
+
+### Branch 1 Networks
+
+| Network | Purpose |
+|---------|---------|
+| 192.168.110.0/24 | Branch 1 Users |
+| 192.168.120.0/24 | Branch 1 Servers |
 
 WAN point-to-point links use `/30` networks, while internal LAN segments use `/24` networks.
 
@@ -99,16 +118,18 @@ The HQ FortiGate firewalls are configured in an Active-Passive High Availability
 
 HA provides firewall redundancy and allows the secondary unit to take over if the primary unit fails.
 
+The HA configuration was validated with both cluster members synchronized and the cluster operating in Active-Passive mode.
+
 IPsec VPN
 
 Site-to-site IPsec VPN is used to provide secure communication between HQ and branch networks.
 
-The VPN design separates the traffic between different network segments, including:
+The VPN design separates traffic between different network segments, including:
 
-HQ Users ↔ Branch Users
-HQ Servers ↔ Branch Servers
+HQ Users ↔ Branch 1 Users
+HQ Servers ↔ Branch 1 Servers
 
-The project uses IKEv2 for the VPN negotiation.
+The project uses IKEv2 for VPN negotiation.
 
 Security
 
@@ -209,10 +230,15 @@ Security testing
 Documentation
 Project Status
 
-The repository contains the PNETLab topology and the complete project documentation.
+The repository contains:
+
+The complete PNETLab topology
+Project documentation
+Network topology screenshot
+Network architecture and addressing information
 
 Configuration and testing details should be referenced from the accompanying technical report.
 
 Disclaimer
 
-This project was developed in a controlled lab environment for educational and practical cybersecurity/network engineering purposes.
+This project was developed in a controlled lab environment for educational and practical cybersecurity and network engineering purposes.
